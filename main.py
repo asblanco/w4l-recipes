@@ -8,16 +8,22 @@ import json
 bottle = Bottle()
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
+# return static_file('data/small_data.json', root='.', mimetype='application/json')
 
 # Define an handler for the root URL of our application.
 @bottle.route('/recipes')
 def root():
-    return static_file('data/small_data.json', root='.')
-@bottle.route('/recipe/<id>')
+    return static_file('data/small_data.json', root='.', mimetype='application/json')
+    
+@bottle.route('/recipe/:id')
 def data(id):
     my_data = open("./data/small_data.json").read()
     jsonDataAsPythonValue = json.loads(my_data)
     return jsonDataAsPythonValue[int(id)]
+
+@bottle.route('/img/<name>')
+def img(name):
+    return static_file('data/'+ name +'.jpg', root='.', mimetype='image/jpeg')
 
 # Define an handler for 404 errors.
 @bottle.error(404)
